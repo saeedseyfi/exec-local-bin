@@ -1,17 +1,19 @@
-const exec = require('child_process').execFile;
-const parent = require('parent-package-json');
+const exec = require('child_process').exec;
 
-const pathToParent = parent().path;
-
-module.exports = async function (bin, options = {timeout: 5000}) {
+module.exports = async function (bin, options) {
     return new Promise((resolve, reject) => {
-        exec(`${pathToParent}/node_modules/.bin/${bin}`, options, (error, stdout) => {
-            if (error) {
-                reject(error);
-                return;
-            }
+            const cmd = `${process.cwd()}/node_modules/.bin/${bin}`;
 
-            resolve(stdout);
-        });
-    });
+            console.log(`Running \`${cmd}\``);
+
+            exec(cmd, options, (error, stdout) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve(stdout);
+            });
+        }
+    );
 };
