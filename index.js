@@ -1,11 +1,14 @@
-const exec = require('child_process').exec;
+const exec = require('child_process').execFile;
 
-const execLocalBin = async function (bin) {
-    return new Promise(resolve => {
-        exec(`./node_modules/.bin/${bin}`, (...args) => {
-            resolve(...args);
+module.exports = async function (bin, oprions = {timeout: 5000}) {
+    return new Promise((resolve, reject) => {
+        exec(`./node_modules/.bin/${bin}`, oprions, (error, stdout) => {
+            if (error) {
+                reject(error);
+                return;
+            }
+
+            resolve(stdout);
         });
     });
 };
-
-module.exports = execLocalBin;
