@@ -13,7 +13,7 @@ module.exports = async function (bin, options) {
                 }
 
                 resolve(stdout);
-            });
+            }).stdout.pipe(process.stdout);
         }
     );
 };
